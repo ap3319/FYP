@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en" style="text-align: center;">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Connect 4 Robot Arm</title>
+    
+
+    <link rel="stylesheet" href="/static/assets/css/robot_ui.css">
+
+    <!-- from bootstrap studio-->
+    <link rel="stylesheet" href="/static/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/assets/css/button.css">
+    <link rel="stylesheet" href="/static/assets/css/animate.min.css">
+    <link rel="stylesheet" href="/static/assets/css/Lightbox-Gallery-baguetteBox.min.css">
+    <link rel="stylesheet" href="/static/assets/css/Navbar-Centered-Brand-Dark-icons.css">
+    <link rel="stylesheet" href="/static/assets/css/wtg-alert-wtg-components.css">
+    <link rel="stylesheet" href="/static/assets/css/wtg-alert.css">
+
+   
+
+</head>
+
+<body>
+    <header style="min-width: 30px;height: 80px;color: var(--bs-dark);">
+        <nav class="navbar navbar-expand-md bg-dark py-1" data-bs-theme="dark" style="height: 80px;">
+            <div class="container-fluid">
+                <div><span
+                        style="color: var(--bs-light-text-emphasis);font-weight: bold;font-size: 48px;">Status:</span><span
+                        id="state"
+                        style="color: var(--bs-light-text-emphasis);font-weight: bold;font-size: 48px;transform: translate(0px);">   </span>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <!-- From Uiverse.io by Nawsome -->
+                    <!-- <button class="fancy-btn">
+                        <span>
+                        </span>
+                        <p data-start="good luck!" data-text="start!" data-title="new game"></p>
+                    </button> -->
+                    <button  class="btn btn-success ms-2 me-2" id = "button-start-game"  type="button"
+                        style="width: 172px;height: 52px;color: var(--bs-light);font-weight: bold;text-align: center;min-width: 179px;font-size: 25px;border-radius: 8px;transition: ease-in;">
+                        Start Game</button>
+
+                    <button class="btn btn-secondary ms-2 me-2" id = "button-reset" type="button"
+                        style="width: 172px;height: 52px;color: var(--bs-light);font-weight: bold;text-align: center;min-width: 179px;font-size: 25px;border-radius: 8px;transition: ease-in;">
+                        Clear E Stop</button>
+
+                        <button class="btn btn-warning me-2" id="button-abandon-game" type="button"
+                        style="width: 250px;height: 52px;color: var(--bs-light);--bs-success: #198754;--bs-success-rgb: 25,135,84;font-weight: bold;text-align: center;min-width: 178px;font-size: 25px;">
+                        Abandon Game</button>
+                        <span style="color: var(--bs-light-text-emphasis);font-weight: bold;font-size: 35px;"></span>
+
+                    <select class="form-select d-inline-block text-bg-primary border-0"  id = "difficulty-select" aria-label="Difficulty"
+                         style="width: 250px;height: 52px; font-weight: bold; text-align: center; min-width: 178px; font-size: 25px  "  >
+                        <option value="" selected disabled hidden> Select Difficulty</option>
+                         <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                        <option value="very_hard">Very Hard</option>
+                        <option value="perfect">Perfect</option>
+                        </select>
+
+                            
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <header></header>
+    </header>
+    <div class="alert alert-success py-1" id="turn-indicator">
+        <span style="width: 168px;height: 52px; font-weight: bold; text-align: center; min-width: 178px; font-size: 40px; color: white"  id="turn">
+        </span>
+        <span id="little-message" class="d-block" style="text-align: center; font-size: 20px; color: white"></span>
+    </div>
+    <div class="alert alert-danger invisible" role="alert" id = "error">
+    </div>
+
+    <div class="modal fade mt-0 pulse animated" role="dialog" tabindex="-1" data-bs-backdrop="static" id = "loading-modal"
+        data-bs-theme="dark">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" style="text-align: center;">Loading Game</h4>
+                </div>
+                <div class="modal-body" style="height: 100px;">
+                    <p id = "loading-message">Loading</p><span class="spinner-border" role="status"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid text-center">
+        <div class="row">
+            <div class="col-lg-8 col-xxl-8">
+                <section class="d-flex flex-column align-items-center py-1">
+                    <div class="row mb-1">
+                        <div class="col-12 text-center">
+                            <h2>Robot's Perspective</h2>
+                            <p>This shows the robot's view of the board from it's cameras</p>
+                        </div>
+                    </div>
+                    <div class="row g-0 w-100" >
+                        <div class="col-8 mx-auto">
+                            <div class="card"><img class="card-img w-100 d-block" src="/board.mjpg"
+                                    style="aspect-ratio: 16/9;object-fit: contain;background: black;">
+                                <div
+                                    class="card-img-overlay text-center d-flex flex-column justify-content-center align-items-center p-2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <p>Picking up a disc</p>
+                            <div class="card"><img class="card-img w-100 d-block"
+                                    src="/pick.mjpg" style="aspect-ratio: 16/9;object-fit: contain;background: black;">
+                                <div
+                                    class="card-img-overlay text-center d-flex flex-column justify-content-center align-items-center p-2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <p>Placing in the funnel</p>
+                            <div class="card"><img class="card-img w-100 d-block"
+                                    src="/place.mjpg" style="aspect-ratio: 16/9;object-fit: contain;background: black;">
+                                <div
+                                    class="card-img-overlay text-center d-flex flex-column justify-content-center align-items-center p-2">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="col-lg-4 col-xxl-4">
+                <section class="py-2 py-xl-5">
+                    <div class="container">
+                        <div class="row mb-2">
+                            <div class="col-12 text-center">
+                                <h2>Human's Perspective</h2>
+                                <p>This is your view of the game board from the opposite side from the robot. It updates
+                                    based on what the robot thinks is in each column.</p>
+                            </div>
+                        </div>
+                        <div class="row gy-4 w-100" style="max-width: 800px;">
+                            <div class="col-12">
+                                <div id="board">
+            
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div style="height: 350px">
+                    <canvas id="scoreChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="text-body bg-body" data-bs-theme="dark">
+        
+        
+        <button id="button-estop">EMERGENCY<br> STOP</button>
+    </footer>
+
+
+
+
+
+
+    <script src="/static/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/assets/js/bs-init.js"></script>
+    <script src="/static/assets/js/chart.umd.min.js"></script>
+    <script src="/static/assets/js/Lightbox-Gallery-baguetteBox.min.js"></script>
+    <script src="/static/assets/js/Lightbox-Gallery.js"></script>
+    <script src="/static/assets/js/scoreChart.js"></script>
+    <script src="/static/assets/js/robot_ui.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,12 @@
+{
+    "type": "pinhole_remapped",
+    "lensboy-version": "4.0.2",
+    "image_width": 1152,
+    "image_height": 648,
+    "fx": 471.68559589632844,
+    "fy": 498.55795836437477,
+    "cx": 576.3434991717357,
+    "cy": 332.79262096170913,
+    "input_image_width": 1152,
+    "input_image_height": 648
+}

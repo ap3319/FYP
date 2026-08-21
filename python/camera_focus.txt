@@ -1,0 +1,2 @@
+6.4158978462219244 for front wide angle camera
+3.4398 for vertical camera
